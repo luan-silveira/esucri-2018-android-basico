@@ -7,6 +7,9 @@ Reposítorio de conteúdo do curso de Android Básico ministrado nas Faculdades 
    - Ambiente de Desenvolvimento
    - Arquitetura
    - Estrutura da Aplicação
+  - [Aula 02 - Telas e Componentes](http://bit.ly/esucri-android-basico-aula02)
+     - Activities, Intents e Intent Filters
+     - Leiautes e Componentes (ViewGroups e Views)
 
 ### Conteúdo Extra
  - [Artigo para os primeiros passos com Git e GitHub](https://tableless.com.br/tudo-que-voce-queria-saber-sobre-git-e-github-mas-tinha-vergonha-de-perguntar/)
