@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Aula03</string>
+    <string name="caixa_de_dialogo">Caixa de Dialogo</string>
+    <string name="mensagem_caixa_de_dialogo">Mensagem da caixa de dialogo</string>
+    <string name="exemplo_tab">Exemplo Tab</string>
+
+    <array name="tipos_estabelecimento">
+        <item>Padaria</item>
+        <item>Supermercado</item>
+        <item>Farmacia</item>
+        <item>Lanchonete</item>
+    </array>
+</resources>
