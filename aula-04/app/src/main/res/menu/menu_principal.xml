@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_opcao1" android:title="Opção 1"/>
-    <item android:id="@+id/menu_opcao2" android:title="Opção 2"/>
+    <item android:id="@+id/menu_opcao1" android:title="Consulta de Produtos"/>
+    <item android:id="@+id/menu_opcao2" android:title="Chamadas Remotas"/>
     <item android:id="@+id/menu_opcao3" android:title="Opção 3"/>
     <item android:id="@+id/menu_opcao4" android:title="Opção 4">
         <menu>

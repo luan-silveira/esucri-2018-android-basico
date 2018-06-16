@@ -1,12 +1,14 @@
 package br.com.cedup.aula04;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,12 +25,15 @@ import br.com.cedup.aula04.model.Produto;
 public class MainActivity extends AppCompatActivity {
 
     EditText codigo, descricao, marca, precoBase;
+    String idProduto;
+    Produto produto;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_opcao1:
-                Toast.makeText(this, item.getTitle(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, ConsultaProdutoActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.menu_opcao2:
                 Toast.makeText(this, item.getTitle(), Toast.LENGTH_LONG).show();
@@ -77,9 +82,24 @@ public class MainActivity extends AppCompatActivity {
                     permissoesRequisitar.toArray(permissoesRequisitarArray), 1);
         }
 
+        idProduto = this.getIntent().getStringExtra("id");
+        if (!TextUtils.isEmpty(idProduto)) {
+            ProdutoController crud = new ProdutoController(getBaseContext());
+            produto = crud.getById(Integer.parseInt(idProduto));
+
+            codigo.setText(produto.getId().toString());
+            descricao.setText(produto.getDescricao());
+            marca.setText(produto.getMarca());
+            precoBase.setText(produto.getPrecoBase().toString());
+        }
+
     }
 
     public void salvar(View view) {
+
+        if (!validaCampos()) {
+            return;
+        }
 
         Produto produto = new Produto();
         produto.setDescricao(descricao.getText().toString());
@@ -90,12 +110,64 @@ public class MainActivity extends AppCompatActivity {
                 ));
 
         ProdutoController crud = new ProdutoController(getBaseContext());
-        long retorno = crud.create(produto);
+        long retorno;
+
+        if (TextUtils.isEmpty(idProduto)) {
+            retorno = crud.create(produto);
+        } else {
+            produto.setId(Integer.parseInt(idProduto));
+            retorno = crud.update(produto);
+        }
 
         if (retorno == -1) {
             Toast.makeText(this, "Erro ao salvar o registro!", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Registro salvo com sucesso!", Toast.LENGTH_LONG).show();
+            limpar();
         }
+    }
+
+    private boolean validaCampos() {
+        Boolean result = true;
+
+        String textoDescricao = descricao.getText().toString().trim();
+        if (TextUtils.isEmpty(textoDescricao)) {
+            descricao.requestFocus();
+            descricao.setError("Campo obrigatório!");
+            return false;
+        }
+
+        return result;
+    }
+
+    public void excluir(View view) {
+
+        if (TextUtils.isEmpty(idProduto)) {
+            Toast.makeText(getBaseContext(),
+                    "Este produto ainda não está no banco de dados!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        ProdutoController crud = new ProdutoController(getBaseContext());
+        long resultado = crud.delete(produto);
+
+        limpar();
+
+        if (resultado == -1) {
+            Toast.makeText(getBaseContext(),"Erro ao excluir produto!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getBaseContext(),"Produto excluído com sucesso!", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void limpar() {
+        idProduto = null;
+        produto = null;
+
+        codigo.setText("");
+        descricao.setText("");
+        marca.setText("");
+        precoBase.setText("");
     }
 }
